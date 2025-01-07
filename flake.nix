@@ -84,6 +84,8 @@
           "zed"
           "orbstack"
           "pycharm"
+          "steam"
+          "minecraft"
         ];
 
         masApps = {
@@ -136,6 +138,7 @@
         dock.persistent-apps = [
           "/System/Applications/Mail.app"
           "/System/Cryptexes/App/System/Applications/Safari.app"
+          "/Applications/Google Chrome.app"
           "/System/Applications/Messages.app"
           "/Applications/PyCharm.app"
           "/Applications/Xcode.app"
@@ -144,6 +147,8 @@
           "/System/Applications/Calendar.app"
           "/System/Applications/Music.app"
           "/Applications/Bear.app"
+          "/Applications/ChatGPT.app"
+          "/System/Applications/Passwords.app"
           "/System/Applications/System Settings.app"
         ];
 
@@ -162,6 +167,9 @@
         NSGlobalDomain.NSAutomaticDashSubstitutionEnabled = false;
         NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
         NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
+
+        NSGlobalDomain."com.apple.trackpad.enableSecondaryClick" = true;
+        magicmouse.MouseButtonMode = "TwoButton";
       };
 
       # Necessary for using flakes on this system.
