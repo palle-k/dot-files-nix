@@ -37,7 +37,6 @@
           python-pkgs.ipython
           python-pkgs.jupyterlab
         ]))
-        pkgs.obsidian
         pkgs.ffmpeg-full
         pkgs.zsh
         pkgs.zsh-powerlevel10k
@@ -55,6 +54,7 @@
         pkgs.uv
         pkgs.ruff
         pkgs.nodejs_23
+        pkgs.nodePackages."serve"
         pkgs.yarn-berry
         pkgs.gnupg
       ];
@@ -170,6 +170,20 @@
 
         NSGlobalDomain."com.apple.trackpad.enableSecondaryClick" = true;
         magicmouse.MouseButtonMode = "TwoButton";
+
+        CustomUserPreferences = {
+          "com.apple.Safari" = {
+            "WebKitPreferences.developerExtrasEnabled" = true;
+            IncludeDevelopMenu = true;
+            WebKitDeveloperExtrasEnabledPreferenceKey = true;
+            AutoOpenSafeDownloads = false;
+            AlwaysRestoreSessionAtLaunch = true;
+          };
+
+          "com.apple.Safari.SandboxBroker" = {
+            "ShowDevelopMenu" = true;
+          };
+        };
       };
 
       # Necessary for using flakes on this system.
