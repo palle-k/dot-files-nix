@@ -178,10 +178,34 @@
             WebKitDeveloperExtrasEnabledPreferenceKey = true;
             AutoOpenSafeDownloads = false;
             AlwaysRestoreSessionAtLaunch = true;
+            ShowStandaloneTabBar = false;
           };
 
           "com.apple.Safari.SandboxBroker" = {
             "ShowDevelopMenu" = true;
+          };
+
+          "com.apple.AdLib" = {
+            allowApplePersonalizedAdvertising = false;
+            allowIdentifierForAdvertising = false;
+          };
+
+          "com.apple.Finder" = {
+            "NSToolbar Configuration Browser"."TB Item Identifiers" = [
+              "com.apple.finder.BACK"
+              "com.apple.finder.SWCH"
+              "NSToolbarSpaceItem"
+              "com.apple.finder.PATH"
+              "com.apple.finder.SHAR"
+              "com.apple.finder.LABL"
+              "com.apple.finder.ACTN"
+              "NSToolbarSpaceItem"
+              "com.apple.finder.SRCH"
+            ];
+
+            "NSToolbar Configuration Browser"."TB Display Mode" = 2;
+
+            "NewWindowTarget" = "PfHm";  # New Finder windows show home directory.
           };
         };
       };
@@ -204,7 +228,7 @@
           source ${pkgs.oh-my-zsh}/share/oh-my-zsh/oh-my-zsh.sh
           source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-          alias ls='lsd'
+          alias ls='${pkgs.lsd}/bin/lsd'
           alias l='ls -l'
           alias la='ls -a'
           alias lla='ls -la'
