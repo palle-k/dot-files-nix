@@ -7,7 +7,7 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -17,13 +17,9 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core, homebrew-cask, ... }:
   let
     configuration = { pkgs, config, ... }: {
       nixpkgs.config.allowUnfree = true;
@@ -33,9 +29,8 @@
       environment.systemPackages = [
         pkgs.mkalias  # support for Spotlight indexing of installed apps
         pkgs.vim
-        (pkgs.python3.withPackages (python-pkgs: [
+        (pkgs.python313.withPackages (python-pkgs: [
           python-pkgs.ipython
-          python-pkgs.jupyterlab
         ]))
         pkgs.ffmpeg-full
         pkgs.zsh
@@ -53,14 +48,23 @@
         pkgs.jq
         pkgs.uv
         pkgs.ruff
-        pkgs.nodejs_23
+        pkgs.nodejs_24
         pkgs.nodePackages."serve"
-        pkgs.yarn-berry
+        pkgs.nodePackages."pm2"
         pkgs.gnupg
+        pkgs.pkgconf
+        pkgs.gcc
+        pkgs.clang
+        pkgs.cloc
+        pkgs.mongosh
+        pkgs.aws-sam-cli
+        pkgs.ngrok
+        pkgs.websocat
       ];
 
       fonts.packages = [
         pkgs.nerd-fonts.jetbrains-mono
+        pkgs.inter
       ];
 
       homebrew = {
@@ -68,6 +72,15 @@
 
         brews = [
           "mas"  # mac app store
+          "libevent"
+          "openssl"
+          "mongo-c-driver"
+          "pango"
+          "harfbuzz"
+          "weasyprint"
+          "libffi"
+          "libpst"
+          "pv"
         ];
 
         casks = [
@@ -84,21 +97,32 @@
           "zed"
           "orbstack"
           "pycharm"
+          "mongodb-compass"
           "steam"
           "minecraft"
+          "session-manager-plugin"
+          "adobe-acrobat-reader"
+          # "figma"
+          "gephi"
+          "redis-insight"
         ];
 
         masApps = {
-          "Xcode" = 497799835;
-          "AdBlock Pro" = 1018301773;
-          "Bear" = 1091189122;
-          "Apple Developer" = 640199958;
+          # "Xcode" = 497799835;
+          # "AdBlock Pro" = 1018301773;
+          # "Bear" = 1091189122;
+          # "Apple Developer" = 640199958;
+          # "Keynote" = 409183694;
+          # "Numbers" = 409203825;
+          # "Pages" = 409201541;
         };
 
         onActivation.cleanup = "zap";
         onActivation.autoUpdate = true;
         onActivation.upgrade = true;
       };
+
+      system.primaryUser = "palle";
 
       system.activationScripts.extraActivation.text = ''
         softwareupdate --install-rosetta --agree-to-license
@@ -234,13 +258,6 @@
           alias lla='ls -la'
           alias lt='ls --tree'
 
-          alias yrb='yarn run build'
-          alias yr='yarn run'
-          alias yu='yarn upgrade'
-          alias ya='yarn add'
-          alias yad='yarn add -D'
-          alias yap='yarn add --peer'
-
           alias dc='docker compose'
           alias dcu='docker compose up'
           alias dcd='docker compose down'
@@ -248,6 +265,9 @@
           alias db='docker build'
 
           eval $(thefuck --alias)
+
+          # add npm globally installed binaries to path
+          export PATH="$PATH:$HOME/.npm/bin"
         '';
       };
 
@@ -261,7 +281,7 @@
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
 
-      security.pam.enableSudoTouchIdAuth = true;
+      security.pam.services.sudo_local.touchIdAuth = true;
 
       users.users.palle.shell = pkgs.zsh;
     };
@@ -299,6 +319,12 @@
     .vscode
     .idea
     *.iml
+    .codebuddy
+    '';
+
+    ipython_config = pkgs: pkgs.writeText "ipython_config.py" ''
+    c.InteractiveShellApp.extensions = ['autoreload']
+    c.InteractiveShellApp.exec_lines = ['%autoreload 2']
     '';
   in
   {
@@ -324,7 +350,6 @@
             taps = {
               "homebrew/homebrew-core" = homebrew-core;
               "homebrew/homebrew-cask" = homebrew-cask;
-              "homebrew/homebrew-bundle" = homebrew-bundle;
             };
 
             # Optional: Enable fully-declarative tap management
@@ -340,6 +365,7 @@
             mkdir -p /Users/palle
             ln -sf ${gitconfig pkgs} /Users/palle/.gitconfig
             ln -sf ${gitignore pkgs} /Users/palle/.gitignore_global
+            ln -sf ${ipython_config pkgs} /Users/palle/.ipython/profile_default/ipython_config.py
           '';
         })
 
