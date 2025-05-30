@@ -7,7 +7,7 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew/605b9354efdadc6d14d754784003898e230519ba";
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -77,7 +77,6 @@
           "mongo-c-driver"
           "pango"
           "harfbuzz"
-          "weasyprint"
           "libffi"
           "libpst"
           "pv"
@@ -360,6 +359,7 @@
         }
 
         ({pkgs, ...}: {
+          nix.enable = false;
           system.activationScripts.postActivation.text = ''
             echo "writing git configuration..." >&2
             mkdir -p /Users/palle
