@@ -7,7 +7,7 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew/605b9354efdadc6d14d754784003898e230519ba";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
