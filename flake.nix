@@ -42,7 +42,6 @@
         pkgs.fzf
         pkgs.awscli2
         pkgs.git
-        pkgs.thefuck
         pkgs.wget
         pkgs.curl
         pkgs.jq
@@ -60,6 +59,7 @@
         pkgs.aws-sam-cli
         pkgs.ngrok
         pkgs.websocat
+        pkgs.bun
       ];
 
       fonts.packages = [
