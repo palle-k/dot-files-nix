@@ -29,6 +29,7 @@
       environment.systemPackages = [
         pkgs.mkalias  # support for Spotlight indexing of installed apps
         pkgs.vim
+        pkgs.python312
         (pkgs.python313.withPackages (python-pkgs: [
           python-pkgs.ipython
         ]))
@@ -263,8 +264,6 @@
           alias dcl='docker compose logs -f'
           alias db='docker build'
 
-          eval $(thefuck --alias)
-
           # add npm globally installed binaries to path
           export PATH="$PATH:$HOME/.npm/bin"
         '';
@@ -307,6 +306,9 @@
 
 	  [push]
 	    autoSetupRemote = true
+
+    [alias]
+      yesterday = log --since='yesterday.midnight' --until='midnight' --all --no-merges --oneline --author=p@lle.dev
     '';
 
     gitignore = pkgs: pkgs.writeText "gitignore" ''
